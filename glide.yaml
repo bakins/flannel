@@ -54,3 +54,5 @@ import:
   - pkg/util/runtime
   - pkg/util/wait
   - pkg/watch
+- package: github.com/imdario/mergo
+  version: 3e95a51e0639b4cf372f2ccf74c86749d747fbdc

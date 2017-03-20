@@ -54,6 +54,7 @@ type CmdLineOpts struct {
 	help          bool
 	version       bool
 	kubeSubnetMgr bool
+	kubeconfig    string
 }
 
 var opts CmdLineOpts
@@ -66,14 +67,15 @@ func init() {
 	flag.StringVar(&opts.etcdCAFile, "etcd-cafile", "", "SSL Certificate Authority file used to secure etcd communication")
 	flag.StringVar(&opts.etcdUsername, "etcd-username", "", "Username for BasicAuth to etcd")
 	flag.StringVar(&opts.etcdPassword, "etcd-password", "", "Password for BasicAuth to etcd")
-	flag.BoolVar(&opts.kubeSubnetMgr, "kube-subnet-mgr", false, "Contact the Kubernetes API for subnet assignement instead of etcd or flannel-server.")
+	flag.StringVar(&opts.kubeconfig, "kubeconifig", "", "Path to kubernetes client configuration file")
+	flag.StringVar(&opts.etcdPassword, "etcd-password", "", "Password for BasicAuth to etcd")
 	flag.BoolVar(&opts.help, "help", false, "print this message")
 	flag.BoolVar(&opts.version, "version", false, "print version and exit")
 }
 
 func newSubnetManager() (subnet.Manager, error) {
 	if opts.kubeSubnetMgr {
-		return kube.NewSubnetManager()
+		return kube.NewSubnetManager(opts.kubeconfig)
 	}
 
 	cfg := &etcdv2.EtcdConfig{
